@@ -1,0 +1,1 @@
+gcc test.c -o exe -Wall -Wextra -std=c99 -lSDL2 ; ./exe
