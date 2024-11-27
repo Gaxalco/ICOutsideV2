@@ -1,16 +1,29 @@
-#include "lib.c"
+#include "assets/lib/lib.c"
 
 int main(int argc, char *argv[]) {
     App app;
+    Player player;
     init_SDL();
     init_APP(&app);
+    init_Player(&app, &player);
 
-    SDL_Rect rect1 = {100, 100, 50, 50};
-    SDL_Rect rect2 = {120, 120, 50, 50};
-    SDL_Rect rect3 = {200, 200, 50, 50};
 
-    printf("Intersection between rect1 and rect2: %s\n", intersect(&rect1, &rect2) ? "true" : "false");
-    printf("Intersection between rect1 and rect3: %s\n", intersect(&rect1, &rect3) ? "true" : "false");
+    SDL_Color cyan = {255, 255, 0, 0};
+
+    SDL_Event e;
+    bool quit = false;
+
+    while (quit == false) {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) quit = true;
+        }
+        randomColor(&cyan);
+        setWindowColor(&app, cyan);
+        SDL_RenderCopy(app.renderer, player.texture, NULL, &player.hitbox);
+        update(&app);
+        delay(1);
+    }
+
 
     close_APP(&app);
     return 0;
