@@ -93,6 +93,7 @@ void init_Player(App *app, Player *player) {
     if (player != NULL) {
         fprintf(stderr, "WARNING! player is not NULL\n");
     }
+    player->speed = 100;
     player->texture = loadTexture(app, paths[Kungfu]);
     get_texture_size(player->texture, &(player->hitbox.w), &(player->hitbox.h));
     player->position.x = app->window_size_x / 2 - player->hitbox.w / 2;
@@ -121,7 +122,7 @@ void delay(unsigned int ms) {
 }
 
 bool pointInRect(SDL_Point *P, SDL_Rect *R) {
-    if ((P ==  NULL) | (R == NULL)) {
+    if ((P ==  NULL) || (R == NULL)) {
         fprintf(stderr, "Pointer is NULL!\n");
         exit(EXIT_FAILURE);
     }
@@ -129,7 +130,7 @@ bool pointInRect(SDL_Point *P, SDL_Rect *R) {
 }
 
 bool intersect(SDL_Rect *A, SDL_Rect *B) {
-    if ((A ==  NULL) | (B == NULL)) {
+    if ((A ==  NULL) || (B == NULL)) {
         fprintf(stderr, "Pointer is NULL!\n");
         exit(EXIT_FAILURE);
     }
@@ -137,7 +138,7 @@ bool intersect(SDL_Rect *A, SDL_Rect *B) {
 }
 
 bool intersectResult(SDL_Rect *A, SDL_Rect *B, SDL_Rect *Intersection) {
-    if ((A ==  NULL) | (B == NULL)) {
+    if ((A ==  NULL) || (B == NULL)) {
         fprintf(stderr, "Pointer is NULL!\n");
         exit(EXIT_FAILURE);
     }
@@ -157,7 +158,7 @@ void drawPoint(App *app, SDL_Point *point) {
 }
 
 void drawLine(App *app, SDL_Point *point1, SDL_Point *point2) {
-    if ((point1 == NULL) | (point2 == NULL)) {
+    if ((point1 == NULL) || (point2 == NULL)) {
         fprintf(stderr, "Pointer is NULL!\n");
         exit(EXIT_FAILURE);
     }
@@ -183,7 +184,7 @@ void update_window_size(App *app) {
 }
 
 void get_texture_size(SDL_Texture *texture, int *w, int *h) {
-    if ((w == NULL) | (h == NULL)) {
+    if ((w == NULL) || (h == NULL)) {
         fprintf(stderr, "Pointer is NULL!\n");
         exit(EXIT_FAILURE);
     }
@@ -245,4 +246,9 @@ SDL_Surface *loadSurface(const char *path) {
         exit(EXIT_FAILURE);
     }
     return surface;
+}
+
+void update_player(Player *player) {
+    player->hitbox.x = player->position.x;
+    player->hitbox.y = player->position.y;
 }
