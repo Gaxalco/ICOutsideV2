@@ -7,48 +7,43 @@
 
 #include "structs.c"
 
-
-
 // Declarations of all functions
 
 /* Init functions */
-void init_SDL();
-void init_random();
-void init_APP(App *app);
-void init_Player(App *app, Player *player);
-void quit_SDL();
-void close_APP(App *app);
+void initSDL();
+void initRandom();
+void initApp(App *app);
+void initPlayer(App *app, Player *player);
+void quitSDL();
+void closeApp(App *app);
 
-/* Usefull small functions */
+/* Useful small functions */
 void delay(unsigned int ms);
 bool pointInRect(SDL_Point *P, SDL_Rect *R);
 bool intersect(SDL_Rect *A, SDL_Rect *B);
 bool intersectResult(SDL_Rect *A, SDL_Rect *B, SDL_Rect *Intersection);
-void update(App *app);
+void updateApp(App *app);
 void drawPoint(App *app, SDL_Point *point);
 void drawLine(App *app, SDL_Point *point1, SDL_Point *point2);
 void drawRect(App *app, SDL_Rect *rect, bool fill);
 
 /* Getters */
-void update_window_size(App *app);
-void get_texture_size(SDL_Texture *texture, int *w, int *h);
+void updateWindowSize(App *app);
+void getTextureSize(SDL_Texture *texture, int *w, int *h);
 
 /* Debug functions */
-void print_window_pos(App *app);
+void printWindowPos(App *app);
 
-/* Usefull functions */
+/* Useful functions */
 void setWindowColor(App *app, SDL_Color color);
 void randomColor(SDL_Color *color);
 SDL_Texture *loadTexture(App *app, const char *path);
 SDL_Surface *loadSurface(const char *path);
-
-
-
-
+void updatePlayer(Player *player);
 
 // Basic Init and Quit functions
 
-void init_SDL() {
+void initSDL() {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error SDL_Init : %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
@@ -56,11 +51,11 @@ void init_SDL() {
 }
 
 // CALL ONLY ONCE
-void init_random() {
+void initRandom() {
     srand(time(NULL));
 }
 
-void init_APP(App *app) {
+void initApp(App *app) {
     if (app != NULL) {
         fprintf(stderr, "WARNING! app is not NULL\n");
     }
@@ -83,39 +78,37 @@ void init_APP(App *app) {
     app->icon = loadSurface(paths[Icon]);
     SDL_SetWindowIcon(app->window, app->icon);
 
-
     // Ensure that the window is in front of all the others
     SDL_RaiseWindow(app->window);
 }
 
 // Init Player
-void init_Player(App *app, Player *player) {
+void initPlayer(App *app, Player *player) {
     if (player != NULL) {
         fprintf(stderr, "WARNING! player is not NULL\n");
     }
     player->speed = 100;
     player->texture = loadTexture(app, paths[Kungfu]);
-    get_texture_size(player->texture, &(player->hitbox.w), &(player->hitbox.h));
+    getTextureSize(player->texture, &(player->hitbox.w), &(player->hitbox.h));
     player->position.x = app->window_size_x / 2 - player->hitbox.w / 2;
     player->position.y = app->window_size_y / 2 - player->hitbox.h / 2;
     player->hitbox.x = app->window_size_x / 2 - player->hitbox.w / 2;
     player->hitbox.y = app->window_size_y / 2 - player->hitbox.h / 2;
 }
 
-void quit_SDL() {
+void quitSDL() {
     SDL_Quit();
 }
 
-void close_APP(App *app) {
+void closeApp(App *app) {
     SDL_DestroyWindow(app->window);
     SDL_DestroyRenderer(app->renderer);
     app->renderer = NULL;
     app->window = NULL;
-    quit_SDL();
+    quitSDL();
 }
 
-
-// Usefull small functions
+// Useful small functions
 
 void delay(unsigned int ms) {
     SDL_Delay(ms);
@@ -145,7 +138,7 @@ bool intersectResult(SDL_Rect *A, SDL_Rect *B, SDL_Rect *Intersection) {
     return SDL_IntersectRect(A, B, Intersection);
 }
 
-void update(App *app) {
+void updateApp(App *app) {
     SDL_RenderPresent(app->renderer);
 }
 
@@ -179,11 +172,11 @@ void drawRect(App *app, SDL_Rect *rect, bool fill) {
 
 // Getters
 
-void update_window_size(App *app) {
+void updateWindowSize(App *app) {
     SDL_GetWindowSize(app->window, &(app->window_size_x), &(app->window_size_y));
 }
 
-void get_texture_size(SDL_Texture *texture, int *w, int *h) {
+void getTextureSize(SDL_Texture *texture, int *w, int *h) {
     if ((w == NULL) || (h == NULL)) {
         fprintf(stderr, "Pointer is NULL!\n");
         exit(EXIT_FAILURE);
@@ -194,17 +187,15 @@ void get_texture_size(SDL_Texture *texture, int *w, int *h) {
     }
 }
 
-
 // Debug functions
 
-void print_window_pos(App *app) {
+void printWindowPos(App *app) {
     int x, y;
     SDL_GetWindowPosition(app->window, &x, &y);
     printf("Window position\n X : %d\n Y : %d\n", x, y);
 }
 
-
-// Usefull functions
+// Useful functions
 
 void setWindowColor(App *app, SDL_Color color) {
     if (SDL_SetRenderDrawColor(app->renderer, color.r, color.g, color.b, color.a) < 0) {
@@ -248,7 +239,7 @@ SDL_Surface *loadSurface(const char *path) {
     return surface;
 }
 
-void update_player(Player *player) {
+void updatePlayer(Player *player) {
     player->hitbox.x = player->position.x;
     player->hitbox.y = player->position.y;
 }

@@ -49,3 +49,9 @@ typedef struct {
     int armor;
     int ammo;
 } Player;
+
+typedef struct {
+    double deltaTime;
+    Uint64 NOW;
+    Uint64 LAST;
+} Clock;
