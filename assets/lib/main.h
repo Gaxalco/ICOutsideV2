@@ -8,6 +8,9 @@
 #include <stdbool.h>
 #include <time.h>
 
+#define REFERENCE_WIDTH 1920
+#define REFERENCE_HEIGHT 1080
+
 // Enums
 typedef enum {
     MAP,
@@ -42,6 +45,9 @@ typedef struct {
     SDL_Texture *texture;
 
     int speed;
+    float normalizedSpeedX;
+    float normalizedSpeedY;
+
     int health;
     int armor;
     int ammo;

@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 
         clock.LAST = clock.NOW;
         clock.NOW = SDL_GetPerformanceCounter();
-        clock.deltaTime = (double)((clock.NOW - clock.LAST) / (double)SDL_GetPerformanceFrequency()); // Copilot says "remove * 1000"
+        clock.deltaTime = (double)((clock.NOW - clock.LAST) / (double)SDL_GetPerformanceFrequency());
 
         while (SDL_PollEvent(&event)) {
             handleInputs(event, &player, &clock, &quit);

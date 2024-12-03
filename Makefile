@@ -14,7 +14,7 @@ SRCS = test.c assets/lib/init.c assets/lib/inputs.c assets/lib/constants.c asset
 OBJS = $(SRCS:.c=.o)
 
 # Executable name
-EXEC = my_program
+EXEC = exe
 
 # Default target
 all: $(EXEC)
@@ -29,7 +29,7 @@ $(EXEC): $(OBJS)
 
 # Clean up object files and executable
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -rf $(OBJS) $(EXEC) *.o
 
 # Phony targets
 .PHONY: all clean
