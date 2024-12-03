@@ -67,6 +67,8 @@ void drawRect(App *app, SDL_Rect *rect, bool fill) {
 
 void updateWindowSize(App *app) {
     SDL_GetWindowSize(app->window, &(app->window_size_x), &(app->window_size_y));
+    printf("Updated Window Size X: %d\n", app->window_size_x); // Debug print
+    printf("Updated Window Size Y: %d\n", app->window_size_y); // Debug print
 }
 
 void getTextureSize(SDL_Texture *texture, int *w, int *h) {

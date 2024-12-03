@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
 
     clock.deltaTime = 0;
     clock.NOW = SDL_GetPerformanceCounter();
-    clock.LAST = 0;
+    clock.LAST = SDL_GetPerformanceCounter();
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 
@@ -15,12 +15,16 @@ int main(int argc, char *argv[]) {
     initApp(&app);
     initPlayer(&app, &player);
 
-    SDL_Color cyan = {255, 255, 0, 0};
+    SDL_Color rose = {230, 160, 160, 0};
 
     SDL_Event event;
     bool quit = false;
 
+    const int FPS = 60;
+    const int frameDelay = 1000 / FPS;
+
     while (quit == false) {
+        Uint32 frameStart = SDL_GetTicks();
 
         clock.LAST = clock.NOW;
         clock.NOW = SDL_GetPerformanceCounter();
@@ -29,11 +33,16 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&event)) {
             handleInputs(event, &player, &clock, &quit);
         }
-        //randomColor(&cyan);
-        setWindowColor(&app, cyan);
+
+        setWindowColor(&app, rose);
         updatePlayer(&player);
         SDL_RenderCopy(app.renderer, player.texture, NULL, &player.hitbox);
         updateApp(&app);
+
+        Uint32 frameTime = SDL_GetTicks() - frameStart;
+        if (frameDelay > frameTime) {
+            SDL_Delay(frameDelay - frameTime);
+        }
     }
 
     closeApp(&app);

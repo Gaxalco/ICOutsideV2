@@ -38,6 +38,9 @@ void initApp(App *app) {
 
     // Ensure that the window is in front of all the others
     SDL_RaiseWindow(app->window);
+
+    // Update window size
+    updateWindowSize(app);
 }
 
 // Init Player
@@ -45,7 +48,7 @@ void initPlayer(App *app, Player *player) {
     if (player != NULL) {
         fprintf(stderr, "WARNING! player is not NULL\n");
     }
-    player->speed = 100000;
+    player->speed = 100;
     player->texture = loadTexture(app, paths[Kungfu]);
     getTextureSize(player->texture, &(player->hitbox.w), &(player->hitbox.h));
     player->position.x = app->window_size_x / 2 - player->hitbox.w / 2;
@@ -53,8 +56,16 @@ void initPlayer(App *app, Player *player) {
     player->hitbox.x = app->window_size_x / 2 - player->hitbox.w / 2;
     player->hitbox.y = app->window_size_y / 2 - player->hitbox.h / 2;
 
-    player->normalizedSpeedX = player->speed * (REFERENCE_WIDTH / (float)app->window_size_x);
-    player->normalizedSpeedY = player->speed * (REFERENCE_HEIGHT / (float)app->window_size_y);
+    // Ensure window size is updated
+    updateWindowSize(app);
+
+    player->normalizedSpeedX = player->speed * ((float)REFERENCE_WIDTH / app->window_size_x);
+    player->normalizedSpeedY = player->speed * ((float)REFERENCE_HEIGHT / app->window_size_y);
+
+    printf("Window Size X: %d\n", app->window_size_x); // Debug print
+    printf("Window Size Y: %d\n", app->window_size_y); // Debug print
+    printf("Normalized Speed X: %f\n", player->normalizedSpeedX); // Debug print
+    printf("Normalized Speed Y: %f\n", player->normalizedSpeedY); // Debug print
 }
 
 void quitSDL() {

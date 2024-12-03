@@ -6,6 +6,7 @@ void handleInputs(SDL_Event event, Player *player, Clock *clock, bool *quit) {
     }
     // KEYDOWN
     else if (event.type == SDL_KEYDOWN) {
+        // printf("Key pressed: %s\n", SDL_GetKeyName(event.key.keysym.sym)); Debug print
         if (event.key.keysym.sym == SDLK_z) {
             player->position.y -= player->normalizedSpeedY * clock->deltaTime;
         }
