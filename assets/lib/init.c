@@ -49,21 +49,20 @@ void InitPlayer(App *app, Player *player) {
     if (player != NULL) {
         fprintf(stderr, "WARNING! player is not NULL\n");
     }
-    player->speed = 50;
+    player->speed = 1;
     player->texture = LoadTexture(app, paths[Kungfu]);
     GetTextureSize(player->texture, &(player->hitbox.w), &(player->hitbox.h));
-    player->position.x = app->windowWidth / 2 - player->hitbox.w / 2;
-    player->position.y = app->windowHeight / 2 - player->hitbox.h / 2;
+    player->x = app->windowWidth / 2 - player->hitbox.w / 2;
+    player->y = app->windowHeight / 2 - player->hitbox.h / 2;
     player->hitbox.x = app->windowWidth / 2 - player->hitbox.w / 2;
     player->hitbox.y = app->windowHeight / 2 - player->hitbox.h / 2;
-    player->directionX = 0;
-    player->directionY = 0;
+    player->up = false;
+    player->down = false;
+    player->left = false;
+    player->right = false;
 
     // Ensure window size is updated
     UpdateWindowSize(app);
-
-    player->normalizedSpeedX = player->speed * ((float)REFERENCE_WIDTH / app->windowWidth);
-    player->normalizedSpeedY = player->speed * ((float)REFERENCE_HEIGHT / app->windowHeight);
 }
 
 void QuitSDL() {

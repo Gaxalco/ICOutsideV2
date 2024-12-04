@@ -11,6 +11,9 @@
 #define REFERENCE_WIDTH 1920
 #define REFERENCE_HEIGHT 1080
 
+#define FRAME_RATE 60
+#define FRAME_DELAY (1000 / FRAME_RATE)
+
 // Enums
 typedef enum {
     MAP,
@@ -41,15 +44,20 @@ typedef struct {
 typedef struct {
     SDL_Rect hitbox;
 
-    SDL_Point position;
     SDL_Texture *texture;
 
-    int speed;
-    double normalizedSpeedX;
-    double normalizedSpeedY;
+    float x;
+    float y;
 
-    int directionX;
-    int directionY;
+    int offsetX;
+    int offsetY;
+
+    float speed;
+
+    bool up;
+    bool down;
+    bool left;
+    bool right;
 
     int health;
     int armor;
@@ -80,6 +88,7 @@ void UpdateRender(App *app);
 void DrawPoint(App *app, SDL_Point *point);
 void DrawLine(App *app, SDL_Point *point1, SDL_Point *point2);
 void DrawRect(App *app, SDL_Rect *rect, bool fill);
+void RandomColor(SDL_Color *color);
 
 /* Getters */
 void UpdateWindowSize(App *app);
@@ -95,6 +104,9 @@ SDL_Texture *LoadTexture(App *app, const char *path);
 SDL_Surface *LoadSurface(const char *path);
 void UpdatePlayer(Player *player);
 void HandleInputs(SDL_Event event, Player *player, bool *quit);
-void Move(Player *player, Clock *clock);
+void Move(App *app, Player *player, Clock *clock);
+void KeyDown(SDL_Event event, Player *player);
+void KeyUp(SDL_Event event, Player *player, bool *quit);
+void SetTextureColor(SDL_Texture *texture, SDL_Color color);
 
 #endif // MAIN_H

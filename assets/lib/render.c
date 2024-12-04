@@ -21,25 +21,3 @@ SDL_Surface *LoadSurface(const char *path) {
     }
     return surface;
 }
-
-void SetWindowColor(App *app, SDL_Color color) {
-    if (SDL_SetRenderDrawColor(app->renderer, color.r, color.g, color.b, color.a) < 0) {
-        fprintf(stderr, "Error setWindowColor : %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
-    if (SDL_RenderClear(app->renderer) < 0) {
-        fprintf(stderr, "Error setWindowColor : %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
-}
-
-void RandomColor(SDL_Color *color) {
-    if (color == NULL) {
-        fprintf(stderr, "Pointer is NULL!\n");
-        exit(EXIT_FAILURE);
-    }
-    color->r = rand() % 256;
-    color->g = rand() % 256;
-    color->b = rand() % 256;
-    color->a = 255;
-}

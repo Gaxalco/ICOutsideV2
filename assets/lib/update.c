@@ -5,8 +5,8 @@ void UpdateRender(App *app) {
 }
 
 void UpdatePlayer(Player *player) {
-    player->hitbox.x = player->position.x;
-    player->hitbox.y = player->position.y;
+    player->hitbox.x = player->x;
+    player->hitbox.y = player->y;
 }
 
 void UpdateWindowSize(App *app) {

@@ -31,3 +31,32 @@ void DrawRect(App *app, SDL_Rect *rect, bool fill) {
         SDL_RenderDrawRect(app->renderer, rect);
     }
 }
+
+void SetWindowColor(App *app, SDL_Color color) {
+    if (SDL_SetRenderDrawColor(app->renderer, color.r, color.g, color.b, color.a) < 0) {
+        fprintf(stderr, "Error setWindowColor : %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+    if (SDL_RenderClear(app->renderer) < 0) {
+        fprintf(stderr, "Error setWindowColor : %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+}
+
+void RandomColor(SDL_Color *color) {
+    if (color == NULL) {
+        fprintf(stderr, "Pointer is NULL!\n");
+        exit(EXIT_FAILURE);
+    }
+    color->r = rand() % 256;
+    color->g = rand() % 256;
+    color->b = rand() % 256;
+    color->a = 255;
+}
+
+void SetTextureColor(SDL_Texture *texture, SDL_Color color) {
+    if (SDL_SetTextureColorMod(texture, color.r, color.g, color.b) < 0) {
+        fprintf(stderr, "Error setTextureColor : %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+}

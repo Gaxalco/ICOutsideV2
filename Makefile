@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -std=c99
 LIBS = -lSDL2
 
 # Source files
-SRCS = test.c assets/lib/init.c assets/lib/inputs.c assets/lib/constants.c assets/lib/tools.c assets/lib/debug.c assets/lib/update.c assets/lib/render.c assets/lib/physics.c assets/lib/getters.c assets/lib/draw.c
+SRCS = main.c assets/lib/init.c assets/lib/inputs.c assets/lib/constants.c assets/lib/tools.c assets/lib/debug.c assets/lib/update.c assets/lib/render.c assets/lib/physics.c assets/lib/getters.c assets/lib/draw.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)
