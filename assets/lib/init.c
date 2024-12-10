@@ -65,6 +65,39 @@ void InitPlayer(App *app, Player *player) {
     UpdateWindowSize(app);
 }
 
+void InitBullet(App *app, Player *player, Bullet *bullet) {
+    if (bullet != NULL) {
+        fprintf(stderr, "WARNING! bullet is not NULL\n");
+    }
+    bullet->active = true;
+    bullet->x = player->x + player->hitbox.w / 2;
+    bullet->y = player->y + player->hitbox.h / 2;
+    bullet->speed = 0.5;
+    bullet->damage = 1;
+    bullet->texture = LoadTexture(app, paths[Kungfu]);
+    bullet->hitbox.w = 50;
+    bullet->hitbox.h = 50;
+    bullet->hitbox.x = bullet->x;
+    bullet->hitbox.y = bullet->y;
+
+    if (player->up) {
+        bullet->direction.x = 0;
+        bullet->direction.y = -1;
+    }
+    if (player->down) {
+        bullet->direction.x = 0;
+        bullet->direction.y = 1;
+    }
+    if (player->left) {
+        bullet->direction.x = -1;
+        bullet->direction.y = 0;
+    }
+    if (player->right) {
+        bullet->direction.x = 1;
+        bullet->direction.y = 0;
+    }
+}
+
 void QuitSDL() {
     SDL_Quit();
 }

@@ -28,7 +28,7 @@ void KeyDown(SDL_Event event, Player *player) {
         player->right = true;
     }
     if (event.key.keysym.sym == SDLK_SPACE) {
-        Shoot(player);
+        player->shooting = true;
     }
 }
 
@@ -48,9 +48,12 @@ void KeyUp(SDL_Event event, Player *player, bool *quit) {
     if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
         player->right = false;
     }
+    if (event.key.keysym.sym == SDLK_SPACE) {
+        player->shooting = false;
+    }
 }
 
-void Move(App *app, Player *player, Clock *clock) {
+void MovePlayer(App *app, Player *player, Clock *clock) {
 
     float normalizedSpeedX = player->speed * ((float)REFERENCE_WIDTH / app->windowWidth);
     float normalizedSpeedY = player->speed * ((float)REFERENCE_HEIGHT / app->windowHeight);
@@ -68,9 +71,32 @@ void Move(App *app, Player *player, Clock *clock) {
         player->x += normalizedSpeedX * clock->deltaTime;
     }
 
-    UpdatePlayer(player);
+    UpdatePlayerHitbox(player);
 }
 
-void Shoot(Player *player) {
-    printf("Shoot\n");
+void UpdateBullets(App *app, Bullet *bullets, Clock *clock) {
+    for (int i = 0; i < MAX_BULLETS; i++) {
+        if (bullets[i].active) {
+            MoveBullet(app, &bullets[i], clock);
+        }
+    }
+}
+
+void MoveBullet(App *app, Bullet *bullet, Clock *clock) {
+    float normalizedSpeedX = bullet->speed * ((float)REFERENCE_WIDTH / app->windowWidth);
+    float normalizedSpeedY = bullet->speed * ((float)REFERENCE_HEIGHT / app->windowHeight);
+
+    bullet->x += bullet->direction.x * normalizedSpeedX * clock->deltaTime;
+    bullet->y += bullet->direction.y * normalizedSpeedY * clock->deltaTime;
+
+    UpdateBulletHitbox(bullet);
+}
+
+void CreateBullet(App *app, Player *player, Bullet *bullets) {
+    for (int i = 0; i < MAX_BULLETS; i++) {
+        if (!bullets[i].active) {
+            InitBullet(app, player, &bullets[i]);
+            return;
+        }
+    }
 }

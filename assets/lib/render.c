@@ -21,3 +21,11 @@ SDL_Surface *LoadSurface(const char *path) {
     }
     return surface;
 }
+
+void RenderBullets(App *app, Bullet *bullets) {
+    for (int i = 0; i < MAX_BULLETS; i++) {
+        if (bullets[i].active) {
+            SDL_RenderCopy(app->renderer, bullets[i].texture, NULL, &bullets[i].hitbox);
+        }
+    }
+}

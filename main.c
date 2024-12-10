@@ -5,6 +5,8 @@ int main(int argc, char *argv[]) {
     Player player;
     Clock clock;
 
+    Bullet bullets[MAX_BULLETS];
+
     clock.deltaTime = 0;
     clock.NOW = SDL_GetPerformanceCounter();
     clock.LAST = 0;
@@ -29,12 +31,18 @@ int main(int argc, char *argv[]) {
         }
 
         RandomColor(&playerColor);
-        Move(&app, &player, &clock);
-        printf("DeltaTime : %lf\n", clock.deltaTime);
+        MovePlayer(&app, &player, &clock);
+
+        if (player.shooting) {
+            CreateBullet(&app, &player, bullets);
+        }
+        UpdateBullets(&app, bullets, &clock);
+
         UpdateWindowSize(&app);
         SetWindowColor(&app, backGround);
         SetTextureColor(player.texture, playerColor);
         SDL_RenderCopy(app.renderer, player.texture, NULL, &player.hitbox);
+        RenderBullets(&app, bullets);
         UpdateRender(&app);
 
         // Cap to 60 FPS
