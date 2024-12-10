@@ -131,7 +131,8 @@ void UpdateRender(App *app);
 void DrawPoint(App *app, SDL_Point *point);
 void DrawLine(App *app, SDL_Point *point1, SDL_Point *point2);
 void DrawRect(App *app, SDL_Rect *rect, bool fill);
-void UpdateBullets(App *app, Bullet *bullets, Clock *clock);
+void UpdateBulletList(App *app, Bullet *bullets, Clock *clock);
 void RenderBullets(App *app, Bullet *bullets);
+void InitBulletList(Bullet *bullets);
 
 #endif // MAIN_H

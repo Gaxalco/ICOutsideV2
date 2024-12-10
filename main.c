@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     InitSDL();
     InitApp(&app);
     InitPlayer(&app, &player);
+    InitBulletList(bullets);
 
     SDL_Color backGround = {230, 160, 160, 0};
     SDL_Color playerColor = {0, 0, 0, 0};
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
         if (player.shooting) {
             CreateBullet(&app, &player, bullets);
         }
-        UpdateBullets(&app, bullets, &clock);
+        UpdateBulletList(&app, bullets, &clock);
 
         UpdateWindowSize(&app);
         SetWindowColor(&app, backGround);

@@ -74,7 +74,7 @@ void MovePlayer(App *app, Player *player, Clock *clock) {
     UpdatePlayerHitbox(player);
 }
 
-void UpdateBullets(App *app, Bullet *bullets, Clock *clock) {
+void UpdateBulletList(App *app, Bullet *bullets, Clock *clock) {
     for (int i = 0; i < MAX_BULLETS; i++) {
         if (bullets[i].active) {
             MoveBullet(app, &bullets[i], clock);

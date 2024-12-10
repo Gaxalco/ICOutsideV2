@@ -65,10 +65,13 @@ void InitPlayer(App *app, Player *player) {
     UpdateWindowSize(app);
 }
 
-void InitBullet(App *app, Player *player, Bullet *bullet) {
-    if (bullet != NULL) {
-        fprintf(stderr, "WARNING! bullet is not NULL\n");
+void InitBulletList(Bullet *bullets) {
+    for (int i = 0; i < MAX_BULLETS; i++) {
+        bullets[i].active = false;
     }
+}
+
+void InitBullet(App *app, Player *player, Bullet *bullet) {
     bullet->active = true;
     bullet->x = player->x + player->hitbox.w / 2;
     bullet->y = player->y + player->hitbox.h / 2;
