@@ -1,4 +1,4 @@
-#include "main.h"
+#include "headers/main.h"
 
 void UpdateRender(App *app) {
     SDL_RenderPresent(app->renderer);

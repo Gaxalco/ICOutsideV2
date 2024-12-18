@@ -1,4 +1,4 @@
-#include "main.h"
+#include "headers/main.h"
 
 char *paths[AllPaths] = {
     "assets/images/window/icon.bmp",

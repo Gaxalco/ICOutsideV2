@@ -1,4 +1,4 @@
-#include "main.h"
+#include "headers/main.h"
 
 void HandleInputs(SDL_Event event, Player *player, bool *quit) {
     if (event.type == SDL_QUIT) {

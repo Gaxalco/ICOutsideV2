@@ -1,4 +1,4 @@
-#include "assets/lib/main.h"
+#include "assets/lib/headers/main.h"
 
 int main(int argc, char *argv[]) {
     App app;
