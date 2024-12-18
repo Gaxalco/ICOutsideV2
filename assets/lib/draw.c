@@ -32,8 +32,8 @@ void DrawRect(App *app, SDL_Rect *rect, bool fill) {
     }
 }
 
-void SetWindowColor(App *app, SDL_Color color) {
-    if (SDL_SetRenderDrawColor(app->renderer, color.r, color.g, color.b, color.a) < 0) {
+void SetWindowColor(App *app) {
+    if (SDL_SetRenderDrawColor(app->renderer, app->windowColor.r, app->windowColor.g, app->windowColor.b, app->windowColor.a) < 0) {
         fprintf(stderr, "Error setWindowColor : %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
     }

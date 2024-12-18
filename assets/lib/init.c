@@ -40,8 +40,25 @@ void InitApp(App *app) {
     SDL_RaiseWindow(app->window);
     SDL_SetWindowFullscreen(app->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
+    // Set window color
+    app->windowColor.r = 230;
+    app->windowColor.g = 160;
+    app->windowColor.b = 160;
+    app->windowColor.a = 0;
+
+    // Init clock
+    app->clock.deltaTime = 0;
+    app->clock.NOW = SDL_GetPerformanceCounter();
+    app->clock.LAST = 0;
+
+    // Init player
+    InitPlayer(app, &(app->player));
+
+
     // Update window size
     UpdateWindowSize(app);
+
+    app->quit = false;
 }
 
 // Init Player
@@ -49,7 +66,12 @@ void InitPlayer(App *app, Player *player) {
     if (player != NULL) {
         fprintf(stderr, "WARNING! player is not NULL\n");
     }
+
     player->speed = 1;
+    player->health = 100;
+    player->armor = 0;
+    player->ammo = 100;
+
     player->texture = LoadTexture(app, paths[Kungfu]);
     GetTextureSize(player->texture, &(player->hitbox.w), &(player->hitbox.h));
     player->x = app->windowWidth / 2 - player->hitbox.w / 2;
@@ -60,6 +82,10 @@ void InitPlayer(App *app, Player *player) {
     player->down = false;
     player->left = false;
     player->right = false;
+
+    // Init bullets
+    InitBulletList(player->bullets);
+
 
     // Ensure window size is updated
     UpdateWindowSize(app);

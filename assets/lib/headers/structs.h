@@ -1,13 +1,23 @@
 #include "main.h"
 
+
 // Structs
 typedef struct {
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Surface *icon;
+    SDL_Color windowColor;
 
     int windowWidth;
     int windowHeight;
+
+    Player player;
+
+    Clock clock;
+
+    SDL_Event event;
+
+    bool quit;
 } App;
 
 typedef struct {
@@ -33,6 +43,8 @@ typedef struct {
     int ammo;
 
     bool shooting;
+
+    Bullet bullets[MAX_BULLETS];
 } Player;
 
 typedef struct {
