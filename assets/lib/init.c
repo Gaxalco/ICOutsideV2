@@ -70,7 +70,8 @@ void InitPlayer(App *app, Player *player) {
     player->speed = 1;
     player->health = 100;
     player->armor = 0;
-    player->ammo = 100;
+    player->ammo = MAX_BULLETS;
+    player->maxAmmo = MAX_BULLETS;
 
     player->texture = LoadTexture(app, paths[Kungfu]);
     GetTextureSize(player->texture, &(player->hitbox.w), &(player->hitbox.h));
@@ -78,11 +79,8 @@ void InitPlayer(App *app, Player *player) {
     player->y = app->windowHeight / 2 - player->hitbox.h / 2;
     player->hitbox.x = app->windowWidth / 2 - player->hitbox.w / 2;
     player->hitbox.y = app->windowHeight / 2 - player->hitbox.h / 2;
-    player->up = false;
-    player->down = false;
-    player->left = false;
-    player->right = false;
-
+    player->directionX = Still;
+    player->directionY = Still;
     // Init bullets
     InitBulletList(player->bullets);
 
@@ -109,20 +107,19 @@ void InitBullet(App *app, Player *player, Bullet *bullet) {
     bullet->hitbox.x = bullet->x;
     bullet->hitbox.y = bullet->y;
 
-    if (player->up) {
-        bullet->direction.x = 0;
-        bullet->direction.y = -1;
-    }
-    if (player->down) {
-        bullet->direction.x = 0;
-        bullet->direction.y = 1;
-    }
-    if (player->left) {
+    // Set direction
+    if (player->directionX == Left) {
         bullet->direction.x = -1;
-        bullet->direction.y = 0;
-    }
-    if (player->right) {
+    } else if (player->directionX == Right) {
         bullet->direction.x = 1;
+    } else {
+        bullet->direction.x = 0;
+    }
+    if (player->directionY == Up) {
+        bullet->direction.y = -1;
+    } else if (player->directionY == Down) {
+        bullet->direction.y = 1;
+    } else {
         bullet->direction.y = 0;
     }
 }

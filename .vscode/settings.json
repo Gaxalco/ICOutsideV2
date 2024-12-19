@@ -4,6 +4,17 @@
         "stdio.h": "c",
         "stdbool.h": "c",
         "main.h": "c",
-        "ios": "c"
-    }
+        "ios": "c",
+        "any": "c",
+        "filesystem": "c",
+        "enums.h": "c",
+        "structs.h": "c"
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/autofs/unitytravail/travail/gpenchaud/INFO2/PERSO/ICOutsideV2",
+            "binaryPath": "/autofs/unitytravail/travail/gpenchaud/INFO2/PERSO/ICOutsideV2/exe",
+            "binaryArgs": []
+        }
+    ]
 }

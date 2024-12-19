@@ -15,3 +15,11 @@ typedef enum {
     BulletTexture,
     AllPaths
 } Paths;
+
+typedef enum {
+    Up,
+    Down,
+    Left,
+    Right,
+    Still
+} Directions;

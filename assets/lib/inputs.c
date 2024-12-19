@@ -1,101 +1,97 @@
 #include "headers/main.h"
 
-void HandleInputs(SDL_Event event, Player *player, bool *quit) {
-    if (event.type == SDL_QUIT) {
-        *quit = true;
+void HandleInputs(App *app) {
+    if (app->event.type == SDL_QUIT) {
+        app->quit = true;
     }
     // KEYDOWN
-    else if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
-        KeyDown(event, player);
+    else if (app->event.type == SDL_KEYDOWN && app->event.key.repeat == 0) {
+        KeyDown(app);
     }
     // KEYUP
-    else if (event.type == SDL_KEYUP) {
-        KeyUp(event, player, quit);
+    else if (app->event.type == SDL_KEYUP) {
+        KeyUp(app);
     }
 }
 
-void KeyDown(SDL_Event event, Player *player) {
-    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_z) {
-        player->up = true;
+void KeyDown(App *app) {
+    if (app->event.key.keysym.sym == SDLK_UP || app->event.key.keysym.sym == SDLK_z) {
+        app->player.directionY = Up;
     }
-    if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) {
-        player->down = true;
+    if (app->event.key.keysym.sym == SDLK_DOWN || app->event.key.keysym.sym == SDLK_s) {
+        app->player.directionY = Down;
     }
-    if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q) {
-        player->left = true;
+    if (app->event.key.keysym.sym == SDLK_LEFT || app->event.key.keysym.sym == SDLK_q) {
+        app->player.directionX = Left;
     }
-    if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
-        player->right = true;
+    if (app->event.key.keysym.sym == SDLK_RIGHT || app->event.key.keysym.sym == SDLK_d) {
+        app->player.directionX = Right;
     }
-    if (event.key.keysym.sym == SDLK_SPACE) {
-        player->shooting = true;
-    }
-}
-
-void KeyUp(SDL_Event event, Player *player, bool *quit) {
-    if (event.key.keysym.sym == SDLK_ESCAPE) {
-        *quit = true;
-    }
-    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_z) {
-        player->up = false;
-    }
-    if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) {
-        player->down = false;
-    }
-    if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q) {
-        player->left = false;
-    }
-    if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) {
-        player->right = false;
-    }
-    if (event.key.keysym.sym == SDLK_SPACE) {
-        player->shooting = false;
+    if (app->event.key.keysym.sym == SDLK_SPACE) {
+        app->player.shooting = true;
     }
 }
 
-void MovePlayer(App *app, Player *player, Clock *clock) {
-
-    float normalizedSpeedX = player->speed * ((float)REFERENCE_WIDTH / app->windowWidth);
-    float normalizedSpeedY = player->speed * ((float)REFERENCE_HEIGHT / app->windowHeight);
-
-    if (player->up) {
-        player->y -= normalizedSpeedY * clock->deltaTime;
-    }   
-    if (player->down) {
-        player->y += normalizedSpeedY * clock->deltaTime;
+void KeyUp(App *app) {
+    if (app->event.key.keysym.sym == SDLK_ESCAPE) {
+        app->quit = true;
     }
-    if (player->left) {
-        player->x -= normalizedSpeedX * clock->deltaTime;
+    if (app->event.key.keysym.sym == SDLK_UP || app->event.key.keysym.sym == SDLK_z ||
+        app->event.key.keysym.sym == SDLK_DOWN || app->event.key.keysym.sym == SDLK_s ||
+        app->event.key.keysym.sym == SDLK_LEFT || app->event.key.keysym.sym == SDLK_q ||
+        app->event.key.keysym.sym == SDLK_RIGHT || app->event.key.keysym.sym == SDLK_d) {
+        app->player.directionX = Still;
+        app->player.directionY = Still;
     }
-    if (player->right) {
-        player->x += normalizedSpeedX * clock->deltaTime;
+    if (app->event.key.keysym.sym == SDLK_SPACE) {
+        app->player.shooting = false;
     }
-
-    UpdatePlayerHitbox(player);
 }
 
-void UpdateBulletList(App *app, Bullet *bullets, Clock *clock) {
+void MovePlayer(App *app) {
+
+    float normalizedSpeedX = app->player.speed * ((float)REFERENCE_WIDTH / app->windowWidth);
+    float normalizedSpeedY = app->player.speed * ((float)REFERENCE_HEIGHT / app->windowHeight);
+
+    if (app->player.directionY == Up) {
+        app->player.y -= normalizedSpeedY * app->clock.deltaTime;
+    }
+    if (app->player.directionY == Down) {
+        app->player.y += normalizedSpeedY * app->clock.deltaTime;
+    }
+    if (app->player.directionX == Left) {
+        app->player.x -= normalizedSpeedX * app->clock.deltaTime;
+    }
+    if (app->player.directionX == Right) {
+        app->player.x += normalizedSpeedX * app->clock.deltaTime;
+    }
+
+
+    UpdatePlayerHitbox(&app->player);
+}
+
+void UpdateBulletList(App *app) {
     for (int i = 0; i < MAX_BULLETS; i++) {
-        if (bullets[i].active) {
-            MoveBullet(app, &bullets[i], clock);
+        if (app->player.bullets[i].active) {
+            MoveBullet(app, &app->player.bullets[i]);
         }
     }
 }
 
-void MoveBullet(App *app, Bullet *bullet, Clock *clock) {
+void MoveBullet(App *app, Bullet *bullet) {
     float normalizedSpeedX = bullet->speed * ((float)REFERENCE_WIDTH / app->windowWidth);
     float normalizedSpeedY = bullet->speed * ((float)REFERENCE_HEIGHT / app->windowHeight);
 
-    bullet->x += bullet->direction.x * normalizedSpeedX * clock->deltaTime;
-    bullet->y += bullet->direction.y * normalizedSpeedY * clock->deltaTime;
+    bullet->x += bullet->direction.x * normalizedSpeedX * app->clock.deltaTime;
+    bullet->y += bullet->direction.y * normalizedSpeedY * app->clock.deltaTime;
 
     UpdateBulletHitbox(bullet);
 }
 
-void CreateBullet(App *app, Player *player, Bullet *bullets) {
+void CreateBullet(App *app) {
     for (int i = 0; i < MAX_BULLETS; i++) {
-        if (!bullets[i].active) {
-            InitBullet(app, player, &bullets[i]);
+        if (!app->player.bullets[i].active) {
+            InitBullet(app, &app->player, &app->player.bullets[i]);
             return;
         }
     }

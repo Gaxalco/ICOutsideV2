@@ -8,9 +8,6 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "structs.h"
-#include "enums.h"
-
 #define REFERENCE_WIDTH 1920
 #define REFERENCE_HEIGHT 1080
 
@@ -18,6 +15,12 @@
 #define FRAME_DELAY (1000 / FRAME_RATE)
 
 #define MAX_BULLETS 100
+
+
+#include "structs.h"
+#include "enums.h"
+#include "functions.h"
+
 
 extern char *paths[AllPaths];
 

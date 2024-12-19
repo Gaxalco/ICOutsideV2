@@ -7,6 +7,9 @@ CFLAGS = -Wall -Wextra -std=c99
 # SDL2 library
 LIBS = -lSDL2
 
+# Include directories
+INCLUDES = -Iassets/lib/headers
+
 # Source files
 SRCS = main.c assets/lib/init.c assets/lib/inputs.c assets/lib/constants.c assets/lib/tools.c assets/lib/debug.c assets/lib/update.c assets/lib/render.c assets/lib/physics.c assets/lib/getters.c assets/lib/draw.c
 
@@ -25,7 +28,7 @@ $(EXEC): $(OBJS)
 
 # Compile source files into object files
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Post-build target to remove object files
 post-build:

@@ -3,36 +3,31 @@
 int main(int argc, char *argv[]) {
     App app;
 
-    Bullet bullets[MAX_BULLETS];
-
     InitSDL();
     InitApp(&app);
 
     SDL_Color playerColor = {0, 0, 0, 0};
 
-    SDL_Event event;
-    bool quit = false;
-
-    while (quit == false) {
+    while (app.quit == false) {
         UpdateClock(&app.clock);
 
-        while (SDL_PollEvent(&event)) {
-            HandleInputs(event, &player, &quit);
+        while (SDL_PollEvent(&app.event)) {
+            HandleInputs(&app);
         }
 
         RandomColor(&playerColor);
         MovePlayer(&app);
 
-        if (player.shooting) {
-            CreateBullet(&app, &player, bullets);
+        if (app.player.shooting) {
+            CreateBullet(&app);
         }
-        UpdateBulletList(&app, bullets, &clock);
+        UpdateBulletList(&app);
 
         UpdateWindowSize(&app);
         SetWindowColor(&app);
-        SetTextureColor(player.texture, playerColor);
-        SDL_RenderCopy(app.renderer, player.texture, NULL, &player.hitbox);
-        RenderBullets(&app, bullets);
+        SetTextureColor(app.player.texture, playerColor);
+        SDL_RenderCopy(app.renderer, app.player.texture, NULL, &app.player.hitbox);
+        RenderBullets(&app, app.player.bullets);
         UpdateRender(&app);
 
         // Cap to 60 FPS
