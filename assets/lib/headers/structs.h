@@ -6,7 +6,8 @@ typedef struct {
     float x;
     float y;
 
-    SDL_Point direction;
+    float dx;
+    float dy;
 
     float speed;
     int damage;

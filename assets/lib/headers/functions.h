@@ -23,6 +23,9 @@ void GetTextureSize(SDL_Texture *texture, int *w, int *h);
 /* Debug functions */
 void PrintWindowPos(App *app);
 
+/* Render functions */
+void RenderBullets(App *app, Bullet *bullets);
+
 /* Useful functions */
 void SetWindowColor(App *app);
 void RandomColor(SDL_Color *color);
@@ -41,3 +44,4 @@ void UpdateRender(App *app);
 void UpdateClock(Clock *clock);
 void UpdateBulletList(App *app);
 void InitBulletList(Bullet *bullets);
+void ButtonDown(App *app);

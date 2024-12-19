@@ -8,6 +8,10 @@ void HandleInputs(App *app) {
     else if (app->event.type == SDL_KEYDOWN && app->event.key.repeat == 0) {
         KeyDown(app);
     }
+    // BUTTONDOWN
+    else if (app->event.type == SDL_MOUSEBUTTONDOWN) {
+        ButtonDown(app);
+    }
     // KEYUP
     else if (app->event.type == SDL_KEYUP) {
         KeyUp(app);
@@ -27,7 +31,10 @@ void KeyDown(App *app) {
     if (app->event.key.keysym.sym == SDLK_RIGHT || app->event.key.keysym.sym == SDLK_d) {
         app->player.directionX = Right;
     }
-    if (app->event.key.keysym.sym == SDLK_SPACE) {
+}
+
+void ButtonDown(App *app) {
+    if (app->event.button.button == SDL_BUTTON_LEFT) {
         app->player.shooting = true;
     }
 }
@@ -37,14 +44,12 @@ void KeyUp(App *app) {
         app->quit = true;
     }
     if (app->event.key.keysym.sym == SDLK_UP || app->event.key.keysym.sym == SDLK_z ||
-        app->event.key.keysym.sym == SDLK_DOWN || app->event.key.keysym.sym == SDLK_s ||
-        app->event.key.keysym.sym == SDLK_LEFT || app->event.key.keysym.sym == SDLK_q ||
-        app->event.key.keysym.sym == SDLK_RIGHT || app->event.key.keysym.sym == SDLK_d) {
-        app->player.directionX = Still;
+        app->event.key.keysym.sym == SDLK_DOWN || app->event.key.keysym.sym == SDLK_s) {
         app->player.directionY = Still;
     }
-    if (app->event.key.keysym.sym == SDLK_SPACE) {
-        app->player.shooting = false;
+    if (app->event.key.keysym.sym == SDLK_LEFT || app->event.key.keysym.sym == SDLK_q ||
+        app->event.key.keysym.sym == SDLK_RIGHT || app->event.key.keysym.sym == SDLK_d) {
+        app->player.directionX = Still;
     }
 }
 
@@ -82,8 +87,8 @@ void MoveBullet(App *app, Bullet *bullet) {
     float normalizedSpeedX = bullet->speed * ((float)REFERENCE_WIDTH / app->windowWidth);
     float normalizedSpeedY = bullet->speed * ((float)REFERENCE_HEIGHT / app->windowHeight);
 
-    bullet->x += bullet->direction.x * normalizedSpeedX * app->clock.deltaTime;
-    bullet->y += bullet->direction.y * normalizedSpeedY * app->clock.deltaTime;
+    bullet->x += bullet->dx * normalizedSpeedX * app->clock.deltaTime;
+    bullet->y += bullet->dy * normalizedSpeedY * app->clock.deltaTime;
 
     UpdateBulletHitbox(bullet);
 }

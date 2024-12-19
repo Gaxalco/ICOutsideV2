@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
 
         if (app.player.shooting) {
             CreateBullet(&app);
+            app.player.shooting = false;
         }
         UpdateBulletList(&app);
 

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 #include <time.h>
 
 #define REFERENCE_WIDTH 1920
@@ -15,6 +16,7 @@
 #define FRAME_DELAY (1000 / FRAME_RATE)
 
 #define MAX_BULLETS 100
+#define BULLET_SPEED 2.0
 
 
 #include "structs.h"

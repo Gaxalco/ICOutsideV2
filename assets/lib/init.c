@@ -99,7 +99,7 @@ void InitBullet(App *app, Player *player, Bullet *bullet) {
     bullet->active = true;
     bullet->x = player->x + player->hitbox.w / 2;
     bullet->y = player->y + player->hitbox.h / 2;
-    bullet->speed = 0.5;
+    bullet->speed = BULLET_SPEED;
     bullet->damage = 1;
     bullet->texture = LoadTexture(app, paths[Kungfu]);
     bullet->hitbox.w = 50;
@@ -108,20 +108,12 @@ void InitBullet(App *app, Player *player, Bullet *bullet) {
     bullet->hitbox.y = bullet->y;
 
     // Set direction
-    if (player->directionX == Left) {
-        bullet->direction.x = -1;
-    } else if (player->directionX == Right) {
-        bullet->direction.x = 1;
-    } else {
-        bullet->direction.x = 0;
-    }
-    if (player->directionY == Up) {
-        bullet->direction.y = -1;
-    } else if (player->directionY == Down) {
-        bullet->direction.y = 1;
-    } else {
-        bullet->direction.y = 0;
-    }
+    SDL_Point mousePos;
+    SDL_GetMouseState(&mousePos.x, &mousePos.y);
+    // Calculate distance between player and mouse
+    float distance = sqrt(pow(mousePos.x - bullet->x, 2) + pow(mousePos.y - bullet->y, 2));
+    bullet->dx = (mousePos.x - bullet->x) / distance;
+    bullet->dy = (mousePos.y - bullet->y) / distance;
 }
 
 void QuitSDL() {

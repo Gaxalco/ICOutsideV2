@@ -4,8 +4,8 @@ CC = gcc
 # Compiler flags
 CFLAGS = -Wall -Wextra -std=c99
 
-# SDL2 library
-LIBS = -lSDL2
+# SDL2 and math libraries
+LIBS = -lSDL2 -lm
 
 # Include directories
 INCLUDES = -Iassets/lib/headers
