@@ -23,3 +23,11 @@ void UpdateClock(Clock *clock) {
     clock->NOW = SDL_GetPerformanceCounter();
     clock->deltaTime = (double)((clock->NOW - clock->LAST) * 1000.0 / (double)SDL_GetPerformanceFrequency());
 }
+
+void DeactivateBullet(Bullet *bullet) {
+    bullet->active = false;
+    bullet->x = 0;
+    bullet->y = 0;
+    bullet->dx = 0;
+    bullet->dy = 0;
+}

@@ -18,17 +18,14 @@ int main(int argc, char *argv[]) {
         RandomColor(&playerColor);
         MovePlayer(&app);
 
-        if (app.player.shooting) {
-            CreateBullet(&app);
-            app.player.shooting = false;
-        }
+
         UpdateBulletList(&app);
 
         UpdateWindowSize(&app);
         SetWindowColor(&app);
-        SetTextureColor(app.player.texture, playerColor);
-        SDL_RenderCopy(app.renderer, app.player.texture, NULL, &app.player.hitbox);
-        RenderBullets(&app, app.player.bullets);
+        SetTextureColor(app.players[0].texture, playerColor);
+        SDL_RenderCopy(app.renderer, app.players[0].texture, NULL, &app.players[0].hitbox);
+        RenderBullets(&app, app.players[0].bullets);
         UpdateRender(&app);
 
         // Cap to 60 FPS

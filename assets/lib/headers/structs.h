@@ -2,7 +2,7 @@
 
 
 // Structs
-typedef struct {
+typedef struct Bullet {
     float x;
     float y;
 
@@ -18,42 +18,49 @@ typedef struct {
     bool active;
 } Bullet;
 
+typedef struct Camera {
+    float x;
+    float y;
+} Camera;
 
-typedef struct {
+
+typedef struct Player{
     SDL_Rect hitbox;
-
     SDL_Texture *texture;
+    int offsetX;
+    int offsetY;
+
+    Camera camera;
 
     float x;
     float y;
 
-    int offsetX;
-    int offsetY;
-
     float speed;
 
-    short directionX;
-    short directionY;
+    short dx;
+    short dy;
 
     int health;
     int armor;
 
     int ammo;
     int maxAmmo;
-
     bool shooting;
-
     Bullet bullets[MAX_BULLETS];
+
+    bool active;
 } Player;
 
-typedef struct {
+
+
+typedef struct Clock {
     double deltaTime;
     Uint64 NOW;
     Uint64 LAST;
 } Clock;
 
 
-typedef struct {
+typedef struct App {
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Surface *icon;
@@ -62,7 +69,7 @@ typedef struct {
     int windowWidth;
     int windowHeight;
 
-    Player player;
+    Player players[4];
 
     Clock clock;
 

@@ -9,6 +9,7 @@ void InitPlayer(App *app, Player *player);
 void InitBullet(App *app, Player *player, Bullet *bullet);
 void QuitSDL();
 void CloseApp(App *app);
+void DeactivatePlayers(Player *players);
 
 /* Useful small functions */
 void Delay(unsigned int ms);
@@ -45,3 +46,4 @@ void UpdateClock(Clock *clock);
 void UpdateBulletList(App *app);
 void InitBulletList(Bullet *bullets);
 void ButtonDown(App *app);
+void DeactivateBullet(Bullet *bullet);

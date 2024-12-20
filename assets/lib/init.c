@@ -51,9 +51,9 @@ void InitApp(App *app) {
     app->clock.NOW = SDL_GetPerformanceCounter();
     app->clock.LAST = 0;
 
-    // Init player
-    InitPlayer(app, &(app->player));
-
+    // Deactivate players
+    DeactivatePlayers(app->players);
+    InitPlayer(app, &(app->players[0]));
 
     // Update window size
     UpdateWindowSize(app);
@@ -67,6 +67,7 @@ void InitPlayer(App *app, Player *player) {
         fprintf(stderr, "WARNING! player is not NULL\n");
     }
 
+    player->active = true;
     player->speed = 1;
     player->health = 100;
     player->armor = 0;
@@ -79,8 +80,8 @@ void InitPlayer(App *app, Player *player) {
     player->y = app->windowHeight / 2 - player->hitbox.h / 2;
     player->hitbox.x = app->windowWidth / 2 - player->hitbox.w / 2;
     player->hitbox.y = app->windowHeight / 2 - player->hitbox.h / 2;
-    player->directionX = Still;
-    player->directionY = Still;
+    player->dx = 0;
+    player->dy = 0;
     // Init bullets
     InitBulletList(player->bullets);
 
@@ -114,6 +115,12 @@ void InitBullet(App *app, Player *player, Bullet *bullet) {
     float distance = sqrt(pow(mousePos.x - bullet->x, 2) + pow(mousePos.y - bullet->y, 2));
     bullet->dx = (mousePos.x - bullet->x) / distance;
     bullet->dy = (mousePos.y - bullet->y) / distance;
+}
+
+void DeactivatePlayers(Player *players) {
+    for (int i = 0; i < MAX_PLAYERS; i++) {
+        players[i].active = false;
+    }
 }
 
 void QuitSDL() {

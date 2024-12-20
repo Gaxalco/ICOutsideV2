@@ -20,22 +20,22 @@ void HandleInputs(App *app) {
 
 void KeyDown(App *app) {
     if (app->event.key.keysym.sym == SDLK_UP || app->event.key.keysym.sym == SDLK_z) {
-        app->player.directionY = Up;
+        app->players[0].dy += -1;
     }
     if (app->event.key.keysym.sym == SDLK_DOWN || app->event.key.keysym.sym == SDLK_s) {
-        app->player.directionY = Down;
+        app->players[0].dy += 1;
     }
     if (app->event.key.keysym.sym == SDLK_LEFT || app->event.key.keysym.sym == SDLK_q) {
-        app->player.directionX = Left;
+        app->players[0].dx += -1;
     }
     if (app->event.key.keysym.sym == SDLK_RIGHT || app->event.key.keysym.sym == SDLK_d) {
-        app->player.directionX = Right;
+        app->players[0].dx += 1;
     }
 }
 
 void ButtonDown(App *app) {
     if (app->event.button.button == SDL_BUTTON_LEFT) {
-        app->player.shooting = true;
+        app->players[0].shooting = true;
     }
 }
 
@@ -43,42 +43,57 @@ void KeyUp(App *app) {
     if (app->event.key.keysym.sym == SDLK_ESCAPE) {
         app->quit = true;
     }
-    if (app->event.key.keysym.sym == SDLK_UP || app->event.key.keysym.sym == SDLK_z ||
-        app->event.key.keysym.sym == SDLK_DOWN || app->event.key.keysym.sym == SDLK_s) {
-        app->player.directionY = Still;
+   if (app->event.key.keysym.sym == SDLK_UP || app->event.key.keysym.sym == SDLK_z) {
+        app->players[0].dy += 1;
     }
-    if (app->event.key.keysym.sym == SDLK_LEFT || app->event.key.keysym.sym == SDLK_q ||
-        app->event.key.keysym.sym == SDLK_RIGHT || app->event.key.keysym.sym == SDLK_d) {
-        app->player.directionX = Still;
+    if (app->event.key.keysym.sym == SDLK_DOWN || app->event.key.keysym.sym == SDLK_s) {
+        app->players[0].dy += -1;
+    }
+    if (app->event.key.keysym.sym == SDLK_LEFT || app->event.key.keysym.sym == SDLK_q) {
+        app->players[0].dx += 1;
+    }
+    if (app->event.key.keysym.sym == SDLK_RIGHT || app->event.key.keysym.sym == SDLK_d) {
+        app->players[0].dx += -1;
     }
 }
 
 void MovePlayer(App *app) {
 
-    float normalizedSpeedX = app->player.speed * ((float)REFERENCE_WIDTH / app->windowWidth);
-    float normalizedSpeedY = app->player.speed * ((float)REFERENCE_HEIGHT / app->windowHeight);
+    float normalizedSpeedX = app->players[0].speed * ((float)REFERENCE_WIDTH / app->windowWidth);
+    float normalizedSpeedY = app->players[0].speed * ((float)REFERENCE_HEIGHT / app->windowHeight);
 
-    if (app->player.directionY == Up) {
-        app->player.y -= normalizedSpeedY * app->clock.deltaTime;
+    if ((app->players[0].x < app->windowWidth / 2 - CAMERA_WIDTH) / 2 || (app->players[0].x > app->windowWidth / 2 + CAMERA_WIDTH / 2) || (app->players[0].y < app->windowHeight / 2 - CAMERA_HEIGHT / 2) || (app->players[0].y > app->windowHeight / 2 + CAMERA_HEIGHT / 2)) {
+        // Move camera
+        if (app->players[0].x < app->windowWidth / 2 - CAMERA_WIDTH / 2 && app->players[0].dx == -1) {
+            app->players[0].camera.x += app->players[0].dx * normalizedSpeedX * app->clock.deltaTime;;
+        } else if (app->players[0].x > app->windowWidth / 2 + CAMERA_WIDTH / 2 && app->players[0].dx == 1) {
+            app->players[0].camera.x += app->players[0].dx * normalizedSpeedX * app->clock.deltaTime;;
+        }
+        if (app->players[0].y < app->windowHeight / 2 - CAMERA_HEIGHT / 2 && app->players[0].dy == -1) {
+            app->players[0].camera.y += -app->players[0].dy * normalizedSpeedY * app->clock.deltaTime;
+        } else if (app->players[0].y > app->windowHeight / 2 + CAMERA_HEIGHT / 2 && app->players[0].dy == 1) {
+            app->players[0].camera.y += -app->players[0].dy * normalizedSpeedY * app->clock.deltaTime;
+        }
+    } else {
+        app->players[0].x += app->players[0].dx * normalizedSpeedX * app->clock.deltaTime;
+        app->players[0].y += app->players[0].dy * normalizedSpeedY * app->clock.deltaTime;
     }
-    if (app->player.directionY == Down) {
-        app->player.y += normalizedSpeedY * app->clock.deltaTime;
-    }
-    if (app->player.directionX == Left) {
-        app->player.x -= normalizedSpeedX * app->clock.deltaTime;
-    }
-    if (app->player.directionX == Right) {
-        app->player.x += normalizedSpeedX * app->clock.deltaTime;
-    }
-
-
-    UpdatePlayerHitbox(&app->player);
+    UpdatePlayerHitbox(&app->players[0]);
 }
 
 void UpdateBulletList(App *app) {
+    if (app->players[0].shooting) {
+        CreateBullet(app);
+        app->players[0].shooting = false;
+    }
     for (int i = 0; i < MAX_BULLETS; i++) {
-        if (app->player.bullets[i].active) {
-            MoveBullet(app, &app->player.bullets[i]);
+        if (app->players[0].bullets[i].active) {
+            // Bullet out of screen
+            if (app->players[0].bullets[i].x < 0 || app->players[0].bullets[i].x > app->windowWidth || app->players[0].bullets[i].y < 0 || app->players[0].bullets[i].y > app->windowHeight) {
+                DeactivateBullet(&app->players[0].bullets[i]);
+            } else {
+                MoveBullet(app, &app->players[0].bullets[i]);
+            }
         }
     }
 }
@@ -95,8 +110,8 @@ void MoveBullet(App *app, Bullet *bullet) {
 
 void CreateBullet(App *app) {
     for (int i = 0; i < MAX_BULLETS; i++) {
-        if (!app->player.bullets[i].active) {
-            InitBullet(app, &app->player, &app->player.bullets[i]);
+        if (!app->players[0].bullets[i].active) {
+            InitBullet(app, &app->players[0], &app->players[0].bullets[i]);
             return;
         }
     }

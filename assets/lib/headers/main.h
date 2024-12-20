@@ -12,11 +12,18 @@
 #define REFERENCE_WIDTH 1920
 #define REFERENCE_HEIGHT 1080
 
+#define WINDOW_TITLE "ICOutside"
+
+#define CAMERA_WIDTH 800
+#define CAMERA_HEIGHT 600
+
 #define FRAME_RATE 60
 #define FRAME_DELAY (1000 / FRAME_RATE)
 
 #define MAX_BULLETS 100
 #define BULLET_SPEED 2.0
+
+#define MAX_PLAYERS 4
 
 
 #include "structs.h"
