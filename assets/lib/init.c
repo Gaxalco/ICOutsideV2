@@ -117,10 +117,27 @@ void InitBullet(App *app, Player *player, Bullet *bullet) {
     bullet->dy = (mousePos.y - bullet->y) / distance;
 }
 
+void CreateBullet(App *app) {
+    for (int i = 0; i < MAX_BULLETS; i++) {
+        if (!app->players[0].bullets[i].active) {
+            InitBullet(app, &app->players[0], &app->players[0].bullets[i]);
+            return;
+        }
+    }
+}
+
 void DeactivatePlayers(Player *players) {
     for (int i = 0; i < MAX_PLAYERS; i++) {
         players[i].active = false;
     }
+}
+
+void DeactivateBullet(Bullet *bullet) {
+    bullet->active = false;
+    bullet->x = 0;
+    bullet->y = 0;
+    bullet->dx = 0;
+    bullet->dy = 0;
 }
 
 void QuitSDL() {

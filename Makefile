@@ -11,7 +11,7 @@ LIBS = -lSDL2 -lm
 INCLUDES = -Iassets/lib/headers
 
 # Source files
-SRCS = main.c assets/lib/init.c assets/lib/inputs.c assets/lib/constants.c assets/lib/tools.c assets/lib/debug.c assets/lib/update.c assets/lib/render.c assets/lib/physics.c assets/lib/getters.c assets/lib/draw.c
+SRCS = main.c assets/lib/init.c assets/lib/inputs.c assets/lib/constants.c assets/lib/tools.c assets/lib/debug.c assets/lib/update.c assets/lib/render.c assets/lib/physics.c assets/lib/getters.c assets/lib/draw.c assets/lib/movement.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)

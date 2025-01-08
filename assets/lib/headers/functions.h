@@ -47,3 +47,4 @@ void UpdateBulletList(App *app);
 void InitBulletList(Bullet *bullets);
 void ButtonDown(App *app);
 void DeactivateBullet(Bullet *bullet);
+void CameraMovement(App *app);

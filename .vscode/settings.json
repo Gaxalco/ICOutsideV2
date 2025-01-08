@@ -1,14 +1,6 @@
 {
     "files.associations": {
-        "sdl.h": "c",
-        "stdio.h": "c",
-        "stdbool.h": "c",
-        "main.h": "c",
-        "ios": "c",
-        "any": "c",
-        "filesystem": "c",
-        "enums.h": "c",
-        "structs.h": "c"
+        "main.h": "c"
     },
     "makefile.launchConfigurations": [
         {
