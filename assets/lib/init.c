@@ -41,9 +41,9 @@ void InitApp(App *app) {
     SDL_SetWindowFullscreen(app->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     // Set window color
-    app->windowColor.r = 230;
-    app->windowColor.g = 160;
-    app->windowColor.b = 160;
+    app->windowColor.r = 255;
+    app->windowColor.g = 255;
+    app->windowColor.b = 255;
     app->windowColor.a = 0;
 
     // Init clock
@@ -68,18 +68,21 @@ void InitPlayer(App *app, Player *player) {
     }
 
     player->active = true;
-    player->speed = 1;
+    player->speed = 1.5;
     player->health = 100;
     player->armor = 0;
     player->ammo = MAX_BULLETS;
     player->maxAmmo = MAX_BULLETS;
 
     player->texture = LoadTexture(app, paths[Kungfu]);
-    GetTextureSize(player->texture, &(player->hitbox.w), &(player->hitbox.h));
+    player->hitbox.w = (int)(200 * ((float)app->windowWidth / REFERENCE_WIDTH));
+    player->hitbox.h = (int)(200 * ((float)app->windowHeight / REFERENCE_HEIGHT));
     player->x = app->windowWidth / 2 - player->hitbox.w / 2;
     player->y = app->windowHeight / 2 - player->hitbox.h / 2;
-    player->hitbox.x = app->windowWidth / 2 - player->hitbox.w / 2;
-    player->hitbox.y = app->windowHeight / 2 - player->hitbox.h / 2;
+    player->screenX = player->x;
+    player->screenY = player->y;
+    player->hitbox.x = player->x;
+    player->hitbox.y = player->y;
     player->dx = 0;
     player->dy = 0;
     // Init bullets
@@ -103,8 +106,8 @@ void InitBullet(App *app, Player *player, Bullet *bullet) {
     bullet->speed = BULLET_SPEED;
     bullet->damage = 1;
     bullet->texture = LoadTexture(app, paths[Kungfu]);
-    bullet->hitbox.w = 50;
-    bullet->hitbox.h = 50;
+    bullet->hitbox.w = (int)(25 * ((float)app->windowWidth / REFERENCE_WIDTH));
+    bullet->hitbox.h = (int)(25 * ((float)app->windowHeight / REFERENCE_HEIGHT));
     bullet->hitbox.x = bullet->x;
     bullet->hitbox.y = bullet->y;
 

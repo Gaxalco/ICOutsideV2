@@ -24,7 +24,9 @@ typedef struct Camera {
 } Camera;
 
 
-typedef struct Player{
+typedef struct Player {
+    float screenX;
+    float screenY;
     SDL_Rect hitbox;
     SDL_Texture *texture;
     int offsetX;
@@ -50,6 +52,28 @@ typedef struct Player{
 
     bool active;
 } Player;
+
+typedef struct Zombie {
+    SDL_Rect hitbox;
+    SDL_Texture *texture;
+    int offsetX;
+    int offsetY;
+
+    Camera camera;
+
+    float x;
+    float y;
+
+    float speed;
+
+    short dx;
+    short dy;
+
+    int health;
+    int armor;
+
+    bool active;
+} Zombie;
 
 
 
